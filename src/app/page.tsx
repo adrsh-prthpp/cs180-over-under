@@ -1,21 +1,22 @@
-export default function Home() {
-  return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white">
-      {/* Hero Section */}
-      <div className="text-center">
-        <h1 className="text-4xl md:text-6xl font-extrabold mb-4 animate-fade-in">
-          Welcome to Over/Under
-        </h1>
-        <p className="text-lg md:text-xl text-gray-300 max-w-lg mx-auto">
-          The ultimate betting experience. Make your predictions, challenge your friends, and win big.
-        </p>
-        <button className="mt-6 bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg text-lg transition-all">
-          Get Started
-        </button>
-      </div>
+"use client";
+import { useRouter } from "next/navigation";
 
-      {/* Floating Glow Effect */}
-      <div className="absolute bottom-10 w-60 h-60 bg-blue-500 opacity-20 blur-3xl rounded-full"></div>
+export default function Home() {
+  const router = useRouter();
+
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen text-center p-6 animate-fade-in">
+      <h1 className="text-5xl font-extrabold mb-4 bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text">
+        Welcome to Over/Under
+      </h1>
+      <p className="text-lg text-gray-300 max-w-lg">
+        The most exciting way to bet on games. Choose your side and test your predictions.
+      </p>
+      <button
+      onClick={() => router.push("/create-bet")}
+      className="mt-6 bg-blue-500 hover:bg-blue-600 transition duration-300 text-white font-semibold px-6 py-3 rounded-lg">
+        Get Started
+      </button>
     </div>
   );
 }
