@@ -22,7 +22,7 @@
     "paths": {
       "@/*": ["./src/*"],                 // Default alias for src/
       "@/app/*": ["./src/app/*"],          // Alias for src/app/
-      "@/components/*": ["./src/components/*"],  // Alias for src/components/
+      "@/components/*": ["./src/app/components/*"],  // Alias for src/components/
       "@/lib/*": ["./src/lib/*"],          // Alias for src/lib/
       "@/config/*": ["./src/config/*"],     // Alias for src/config/
       "@styles/*": ["./styles/*"]
