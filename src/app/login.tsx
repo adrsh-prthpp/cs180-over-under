@@ -34,7 +34,8 @@ export default function Login() {
         throw new Error("Missing token");
       }
     } catch (error) {
-      setError(error.message || "Login failed");
+      console.error(error); // Log the error instead of leaving it unused
+      setError("Login failed");
     }
   }
 
