@@ -1,0 +1,18 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+// prisma/schema.prisma
+datasource db {
+  provider  = "postgresql"
+  url  	    = env("DATABASE_URL")
+  // uncomment next line if you use Prisma <5.10
+  // directUrl = env("DATABASE_URL_UNPOOLED")
+}
+
+model Bet {
+  id        String   @id @default(uuid())
+  question  String
+  creatorId String
+  createdAt DateTime @default(now())
+}
