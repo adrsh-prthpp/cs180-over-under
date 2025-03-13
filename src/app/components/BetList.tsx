@@ -1,25 +1,40 @@
+"use client";
 import BetCard from "./BetCard";
+import React from "react"; // ✅ Import React to properly handle props
 
 interface Bet {
   id: string;
   name: string;
+  expiry?: number;
   overCount: number;
   underCount: number;
-  expiry: number;
 }
 
 interface BetListProps {
   bets: Bet[];
+  refreshBets: () => Promise<void>;
 }
 
-export default function BetList({ bets }: BetListProps) {
+const BetList: React.FC<BetListProps> = ({ bets, refreshBets }) => {
   return (
     <div className="space-y-4">
       {bets.length > 0 ? (
-        bets.map((bet) => <BetCard key={bet.id} {...bet} />)
+        bets.map((bet) => (
+          <BetCard
+            key={bet.id}
+            id={bet.id}
+            name={bet.name}
+            expiry={bet.expiry}
+            overCount={bet.overCount}
+            underCount={bet.underCount}
+            refreshBets={refreshBets}
+          />
+        ))
       ) : (
-        <p className="text-gray-400">No active bets.</p>
+        <p className="text-center text-gray-500">No active bets.</p>
       )}
     </div>
   );
-}
+};
+
+export default BetList;

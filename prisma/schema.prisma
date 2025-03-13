@@ -2,17 +2,35 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// prisma/schema.prisma
 datasource db {
-  provider  = "postgresql"
-  url  	    = env("DATABASE_URL")
-  // uncomment next line if you use Prisma <5.10
-  // directUrl = env("DATABASE_URL_UNPOOLED")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String    @id @default(uuid())
+  name        String
+  email       String    @unique
+  password    String
+  createdBets Bet[]     @relation("UserCreatedBets")
+  bets        BetUser[]
 }
 
 model Bet {
-  id        String   @id @default(uuid())
-  question  String
-  creatorId String
-  createdAt DateTime @default(now())
+  id        String    @id @default(uuid())
+  expiry    Int?
+  name      String
+  creatorId String?
+  creator   User?     @relation("UserCreatedBets", fields: [creatorId], references: [id])
+  betUsers  BetUser[]
+}
+
+model BetUser {
+  userId String
+  betId  String
+  choice String
+  bet    Bet    @relation(fields: [betId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, betId])
 }
