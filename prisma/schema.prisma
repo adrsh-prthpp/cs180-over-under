@@ -13,29 +13,26 @@ model User {
   email     String    @unique
   password  String
   createdAt DateTime  @default(now())
-
-  createdBets Bet[]    @relation("UserCreatedBets")  // ✅ Users who created bets
-  betPlacements BetUser[] // ✅ Users who placed bets
+  bets      Bet[]
+  betUsers  BetUser[]
 }
 
 model Bet {
-  id        String   @id @default(uuid())
+  id        String    @id @default(uuid())
+  expiry    Int?
   creatorId String
-  createdAt DateTime @default(now())
-  expiry    DateTime? // ✅ Added expiry
+  createdAt DateTime  @default(now())
   question  String
-
-  creator   User      @relation("UserCreatedBets", fields: [creatorId], references: [id])
-  betUsers  BetUser[]  // ✅ Added missing betUsers relation
+  creator   User      @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  betUsers  BetUser[]
 }
 
 model BetUser {
   userId String
   betId  String
-  choice String  // "over" or "under"
+  choice String
+  bet    Bet    @relation(fields: [betId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  bet  Bet  @relation(fields: [betId], references: [id], onDelete: Cascade)
-
-  @@id([userId, betId]) // Composite primary key
+  @@id([userId, betId])
 }

@@ -6,12 +6,16 @@ export default function BetsPage() {
   const [bets, setBets] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const userId = "user-1"; // Replace with actual userId from authentication or state
+  const userId = "97e313cb-b4bf-40ed-af2b-9e5e0ddc4f6c"; // Replace with actual userId from authentication or state
 
+  // Fetch bets from the API
   async function fetchBets() {
     setLoading(true);
     try {
       const res = await fetch("/api/bets", { cache: "no-store" });
+      if (!res.ok) {
+        throw new Error("Network response was not ok");
+      }
       const data = await res.json();
       setBets(data);
     } catch (error) {
