@@ -9,7 +9,7 @@ interface BetCardProps {
 }
 
 export default function BetCard({ name, expiry, overCount, underCount }: BetCardProps) {
-  # const [timeLeft, setTimeLeft] = useState(expiry ? expiry - Date.now() : null);
+  // const [timeLeft, setTimeLeft] = useState(expiry ? expiry - Date.now() : null);
 
   return (
     <div className="border p-6 rounded-lg shadow-md bg-gray-800 text-white transform transition duration-300 hover:scale-105 hover:shadow-lg">
