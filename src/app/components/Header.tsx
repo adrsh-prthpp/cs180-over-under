@@ -37,6 +37,16 @@ export default function Header() {
                 Create Bet
               </Link>
             </li>
+            <li>
+              <Link
+                href="/profile"
+                className={`hover:text-blue-400 ${
+                  pathname === "/profile" ? "text-blue-400" : ""
+                }`}
+              >
+                Profile
+              </Link>
+            </li>
           </ul>
         </nav>
       </div>
