@@ -10,12 +10,12 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
-    const { creatorId, name, expiry } = body;
+    const { creatorId, question, expiry } = body; // ✅ Fix: Change `name` to `question`
 
     const newBet = await prisma.bet.create({
       data: {
         creatorId,
-        name,
+        question, // ✅ Fix: Use `question` instead of `name`
         expiry: expiry ? parseInt(expiry) : null,
       },
     });
