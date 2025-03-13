@@ -5,9 +5,7 @@ import prisma from "@/lib/prisma";
 export async function GET() {
   try {
     const bets = await prisma.bet.findMany({
-      include: {
-        betUsers: true, // Fetch users who placed bets
-      },
+      include: { betUsers: true },
     });
 
     const formattedBets = bets.map((bet) => {
@@ -16,7 +14,7 @@ export async function GET() {
 
       return {
         id: bet.id,
-        name: bet.name,
+        question: bet.question,
         expiry: bet.expiry,
         overCount,
         underCount,

@@ -2,16 +2,20 @@
 import { useState, useEffect } from "react";
 import BetList from "./BetList";
 
-export default function UserProfile() {
-  const [user, setUser] = useState({ name: "John Doe", totalBets: 0, activeBets: [] });
+export default function UserProfile({ userId }: { userId: string }) {
+  const [user, setUser] = useState({
+    name: "John Doe",
+    totalBets: 0,
+    activeBets: [],
+  });
   const [loading, setLoading] = useState(true);
 
   async function fetchUserBets() {
     setLoading(true);
     try {
-      const res = await fetch("/api/user-bets?userId=user-1", { cache: "no-store" });
+      const res = await fetch(`/api/user-bets?userId=${userId}`, { cache: "no-store" });
       const data = await res.json();
-      setUser({ ...user, totalBets: data.totalBets, activeBets: data.activeBets });
+      setUser({ name: data.name, totalBets: data.totalBets, activeBets: data.activeBets });
     } catch (error) {
       console.error("Error fetching user bets:", error);
     }
@@ -29,7 +33,11 @@ export default function UserProfile() {
       <p className="text-center text-gray-400">Total Bets: {user.totalBets}</p>
 
       <h2 className="text-xl font-bold mt-6">Your Active Bets</h2>
-      {loading ? <p>Loading your bets...</p> : <BetList bets={user.activeBets} refreshBets={fetchUserBets} />}
+      {loading ? (
+        <p>Loading your bets...</p>
+      ) : (
+        <BetList userId={userId} bets={user.activeBets} refreshBets={fetchUserBets} />
+      )}
     </div>
   );
 }

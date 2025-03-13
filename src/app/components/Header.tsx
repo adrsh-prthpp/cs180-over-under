@@ -1,55 +1,48 @@
 "use client";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function Header() {
-  const pathname = usePathname(); // Get current route
+  const [user, setUser] = useState<{ id: string; name: string } | null>(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
+  function handleLogout() {
+    localStorage.removeItem("user");
+    setUser(null);
+  }
 
   return (
-    <header className="bg-gray-800 text-white py-4 px-6 shadow-md">
-      <div className="max-w-6xl mx-auto flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Over/Under</h1>
-        <nav>
-          <ul className="flex space-x-6">
-            <li>
-              <Link
-                href="/"
-                className={`hover:text-blue-400 ${pathname === "/" ? "text-blue-400" : ""}`}
-              >
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/bets"
-                className={`hover:text-blue-400 ${pathname === "/bets" ? "text-blue-400" : ""}`}
-              >
-                Bets
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/create-bet"
-                className={`hover:text-blue-400 ${
-                  pathname === "/create-bet" ? "text-blue-400" : ""
-                }`}
-              >
-                Create Bet
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/profile"
-                className={`hover:text-blue-400 ${
-                  pathname === "/profile" ? "text-blue-400" : ""
-                }`}
-              >
-                Profile
-              </Link>
-            </li>
-          </ul>
-        </nav>
+    <nav className="flex justify-between items-center bg-gray-900 text-white p-4">
+      <Link href="/" className="text-2xl font-bold">
+        Over/Under
+      </Link>
+      <div className="space-x-4">
+        <Link href="/bets" className="hover:underline">
+          Bets
+        </Link>
+        <Link href="/create-bet" className="hover:underline">
+          Create Bet
+        </Link>
+        {user ? (
+          <>
+            <span>👤 {user.name}</span>
+            <button onClick={handleLogout} className="bg-red-500 px-3 py-1 rounded">
+              Logout
+            </button>
+          </>
+        ) : (
+          <Link href="/login" className="bg-blue-500 px-3 py-1 rounded">
+            Login / Signup
+          </Link>
+
+        )}
       </div>
-    </header>
+    </nav>
   );
 }
