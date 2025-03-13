@@ -4,6 +4,8 @@ First, run the development server:
 
 ```bash
 npm install
+npm install prisma @prisma/client
+
 create the .env file in the root directory
 add this in it:
 
