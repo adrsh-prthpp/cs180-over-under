@@ -8,29 +8,34 @@ datasource db {
 }
 
 model User {
-  id          String    @id @default(uuid())
-  name        String
-  email       String    @unique
-  password    String
-  createdBets Bet[]     @relation("UserCreatedBets")
-  bets        BetUser[]
+  id        String    @id @default(uuid())
+  name      String
+  email     String    @unique
+  password  String
+  createdAt DateTime  @default(now())
+
+  createdBets Bet[]    @relation("UserCreatedBets")  // ✅ Users who created bets
+  betPlacements BetUser[] // ✅ Users who placed bets
 }
 
 model Bet {
-  id        String    @id @default(uuid())
-  expiry    Int?
-  name      String
-  creatorId String?
-  creator   User?     @relation("UserCreatedBets", fields: [creatorId], references: [id])
-  betUsers  BetUser[]
+  id        String   @id @default(uuid())
+  creatorId String
+  createdAt DateTime @default(now())
+  expiry    DateTime? // ✅ Added expiry
+  question  String
+
+  creator   User      @relation("UserCreatedBets", fields: [creatorId], references: [id])
+  betUsers  BetUser[]  // ✅ Added missing betUsers relation
 }
 
 model BetUser {
   userId String
   betId  String
-  choice String
-  bet    Bet    @relation(fields: [betId], references: [id], onDelete: Cascade)
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  choice String  // "over" or "under"
 
-  @@id([userId, betId])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bet  Bet  @relation(fields: [betId], references: [id], onDelete: Cascade)
+
+  @@id([userId, betId]) // Composite primary key
 }

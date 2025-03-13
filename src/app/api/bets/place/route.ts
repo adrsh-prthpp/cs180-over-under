@@ -1,25 +1,18 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-import { verifyToken } from "@/lib/authMiddleware";
 
-export async function POST(req: NextRequest) {
+export async function POST(req: Request) {
   try {
-    const auth = verifyToken(req);
-    if (!auth || !auth.userId) { // Ensure auth object has userId
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const { userId, betId, choice } = await req.json();
+
+    if (!userId || !betId || !choice) {
+      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
-    const { betId, choice } = await req.json();
-
-    if (!betId || !choice) {
-      return NextResponse.json({ error: "Missing betId or choice" }, { status: 400 });
-    }
-
-    // Create or update the user's bet in BetUser table
     const betUser = await prisma.betUser.upsert({
-      where: { userId_betId: { userId: auth.userId, betId } },
-      update: { choice }, 
-      create: { userId: auth.userId, betId, choice }, 
+      where: { userId_betId: { userId, betId } },
+      update: { choice },
+      create: { userId, betId, choice },
     });
 
     return NextResponse.json({ success: true, betUser });
