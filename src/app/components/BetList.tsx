@@ -17,15 +17,25 @@ interface BetListProps {
 
 export default function BetList({ userId, bets, refreshBets }: BetListProps) {
   async function placeVote(betId: string, choice: string) {
-    await fetch("/api/bets/place", {
+    console.log("Placing vote with userId:", userId, " betId:", betId, " choice:", choice);
+  
+    const response = await fetch("/api/bets/place", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId, betId, choice }),
     });
-
-    alert("Vote placed!");
-    refreshBets(); // Refresh the bet list after voting
+  
+    const data = await response.json();
+  
+    if (!response.ok) {
+      alert(`Failed to place vote: ${data.error}`);
+    } else {
+      alert("Vote placed!");
+      refreshBets();
+    }
   }
+  
+  
 
   return (
     <div>

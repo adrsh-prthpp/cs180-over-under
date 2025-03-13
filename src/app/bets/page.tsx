@@ -6,7 +6,7 @@ export default function BetsPage() {
   const [bets, setBets] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const userId = "97e313cb-b4bf-40ed-af2b-9e5e0ddc4f6c"; // Replace with actual userId from authentication or state
+  const userId = "b6b2fde2-ef94-48ee-9bc6-4fcc5241f38c"; // Replace with actual userId from authentication or state
 
   // Fetch bets from the API
   async function fetchBets() {

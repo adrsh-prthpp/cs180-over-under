@@ -3,16 +3,25 @@ import prisma from "@/lib/prisma";
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
+    const { userId, betId, choice } = await req.json();
 
-    if (!body || !body.userId || !body.betId || !body.choice) {
-      console.error("Invalid request payload:", body);
-      return NextResponse.json({ error: "Invalid request payload" }, { status: 400 });
+    if (!userId || !betId || !choice) {
+      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
-    const { userId, betId, choice } = body;
+    console.log("Received vote request:", { userId, betId, choice });
 
-    // Place bet
+    // Check if the user exists
+    const userExists = await prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!userExists) {
+      console.error("User does not exist:", userId);
+      return NextResponse.json({ error: "User does not exist" }, { status: 404 });
+    }
+
+    // Upsert the vote in the database
     const betUser = await prisma.betUser.upsert({
       where: { userId_betId: { userId, betId } },
       update: { choice },
