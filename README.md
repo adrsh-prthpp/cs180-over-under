@@ -15,9 +15,9 @@ add this in it:
 # Prisma supports the native connection string format for PostgreSQL, MySQL, SQLite, SQL Server, MongoDB and CockroachDB.
 # See the documentation for all the connection string options: https://pris.ly/d/connection-strings
 
-DATABASE_URL="postgresql://neondb_owner:npg_NaGCjkY6ETR4@ep-fragrant-paper-aa9p40ju-pooler.westus3.azure.neon.tech/neondb?sslmode=require"
+DATABASE_URL="prisma+postgres://accelerate.prisma-data.net/?api_key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5IjoiMmRiZmZlYTYtNjVmNS00MmJiLWJiNWYtZDc1ODJhYWQ1ZTUyIiwidGVuYW50X2lkIjoiYjc0MTBjNDg0MmY0YTRjMGIxMjIwNmQxYjQ5YmIwOGQ4ZmM3MjMwY2I4YjQ1MDAzOGMzZWI3NTg1ZTM1N2E5NiIsImludGVybmFsX3NlY3JldCI6IjliYTIyNDZhLTUwZTQtNDE4ZS1iZTI1LTNhM2I2M2M2MWRiMSJ9.4ju_tG0dJBXJVb-Z0mh8ZoJB_0RnMdc2ts488pwcpDc"
 # uncomment next line if you use Prisma <5.10
-# DATABASE_URL_UNPOOLED="postgresql://neondb_owner:npg_NaGCjkY6ETR4@ep-fragrant-paper-aa9p40ju.westus3.azure.neon.tech/neondb?sslmode=require"
+# DATABASE_URL_UNPOOLED="postgresql://neondb_owner:npg_NaGCjkY6ETR4@ep-fragrant-paper-aa9p40ju.westus3.
 
 # run these lines below in terminal
 npx prisma generate
