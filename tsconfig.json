@@ -25,7 +25,8 @@
       "@/components/*": ["./src/app/components/*"],  // Alias for src/components/
       "@/lib/*": ["./src/lib/*"],          // Alias for src/lib/
       "@/config/*": ["./src/config/*"],     // Alias for src/config/
-      "@styles/*": ["./styles/*"]
+      "@styles/*": ["./styles/*"],
+      "@prisma/*": ["./prisma/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

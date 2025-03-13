@@ -1,29 +1,47 @@
 "use client";
 import { useState } from "react";
+import { apiFetch } from "@/lib/api";
 
 interface BetCardProps {
+  id: string;
   name: string;
-  expiry?: number; // Timestamp in ms
+  expiry?: number;
   overCount: number;
   underCount: number;
+  refreshBets: () => void;
 }
 
-export default function BetCard({ name, expiry, overCount, underCount }: BetCardProps) {
-  const [timeLeft, setTimeLeft] = useState(expiry ? expiry - Date.now() : null);
+export default function BetCard({ id, name, expiry, overCount, underCount, refreshBets }: BetCardProps) {
+  const [loading, setLoading] = useState(false);
+
+  async function placeBet(choice: "over" | "under") {
+    if (!id) return alert("Bet ID is missing");
+
+    setLoading(true);
+    try {
+      await apiFetch("/api/bets/place", {
+        method: "POST",
+        body: JSON.stringify({ betId: id, choice }),
+      });
+
+      refreshBets();
+    } catch (error) {
+      console.error("Bet placement error:", error);
+      alert("Failed to place bet");
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
-    <div className="border p-6 rounded-lg shadow-md bg-gray-800 text-white transform transition duration-300 hover:scale-105 hover:shadow-lg">
+    <div className="border p-4 rounded-lg shadow-md">
       <h3 className="text-lg font-bold">{name}</h3>
-      {expiry && (
-        <p className="text-sm text-gray-400">
-          Expires in: {Math.max(0, Math.floor(timeLeft! / 1000))}s
-        </p>
-      )}
-      <div className="flex justify-between mt-4">
-        <button className="bg-green-500 text-white px-4 py-2 rounded-md transition hover:bg-green-600">
+      {expiry && <p className="text-sm text-gray-500">Expires in: {Math.floor(expiry / 1000)}s</p>}
+      <div className="flex justify-between mt-2">
+        <button onClick={() => placeBet("over")} disabled={loading} className="bg-green-500 text-white px-3 py-1 rounded-md">
           Over ({overCount})
         </button>
-        <button className="bg-red-500 text-white px-4 py-2 rounded-md transition hover:bg-red-600">
+        <button onClick={() => placeBet("under")} disabled={loading} className="bg-red-500 text-white px-3 py-1 rounded-md">
           Under ({underCount})
         </button>
       </div>
