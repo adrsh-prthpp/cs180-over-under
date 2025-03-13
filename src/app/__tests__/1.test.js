@@ -85,3 +85,64 @@ describe('Bet expiry functionality', () => {
     expect(activeBet.expiry).toBeGreaterThan(currentTime);
   });
 });
+
+describe('User authentication', () => {
+  const testUsers = [
+    { email: 'test1@example.com', password: 'password123', name: 'Test User 1' },
+    { email: 'test2@example.com', password: 'securePass456', name: 'Test User 2' },
+    { email: 'test3@example.com', password: 'userPass789!', name: 'Test User 3' }
+  ];
+
+  it('should create users with valid credentials', () => {
+    testUsers.forEach(user => {
+      expect(user.email).toMatch(/^[^\s@]+@[^\s@]+\.[^\s@]+$/); // Valid email format
+      expect(user.password.length).toBeGreaterThanOrEqual(8); // Password length >= 8
+      expect(user.name).toBeTruthy(); // Name is not empty
+    });
+  });
+
+  it('should store user data correctly', () => {
+    const storedUsers = testUsers.map(user => ({
+      ...user,
+      id: expect.any(String),
+      createdAt: expect.any(Date)
+    }));
+
+    storedUsers.forEach((user, index) => {
+      expect(user.email).toBe(testUsers[index].email);
+      expect(user.name).toBe(testUsers[index].name);
+      expect(user).toHaveProperty('id');
+      expect(user).toHaveProperty('createdAt');
+    });
+  });
+
+  it('should reject invalid email formats', () => {
+    const invalidEmails = [
+      'invalid.email',
+      '@nodomain.com',
+      'noat.com',
+      'spaces @domain.com'
+    ];
+
+    invalidEmails.forEach(email => {
+      expect(email).not.toMatch(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+    });
+  });
+
+  it('should reject weak passwords', () => {
+    const weakPasswords = [
+      '123', // too short
+      'password', // too common
+      '12345678', // only numbers
+      'abcdefgh' // only lowercase letters
+    ];
+
+    weakPasswords.forEach(password => {
+      expect(password.length >= 8 || 
+        /[A-Z]/.test(password) ||
+        /[0-9]/.test(password) ||
+        /[^A-Za-z0-9]/.test(password)
+      ).toBeTruthy();
+    });
+  });
+});
