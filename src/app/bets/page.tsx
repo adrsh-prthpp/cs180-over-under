@@ -6,11 +6,13 @@ export default function BetsPage() {
   const [bets, setBets] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const userId = "b6b2fde2-ef94-48ee-9bc6-4fcc5241f38c"; // Replace with actual userId from authentication or state
+
   // Fetch bets from the API
   async function fetchBets() {
     setLoading(true);
     try {
-      const res = await fetch("/api/bets", { cache: "no-store" }); // Prevents caching old data
+      const res = await fetch("/api/bets", { cache: "no-store" });
       if (!res.ok) {
         throw new Error("Network response was not ok");
       }
@@ -33,8 +35,7 @@ export default function BetsPage() {
       {loading ? (
         <p>Loading bets...</p>
       ) : (
-        // Pass fetchBets as a prop so BetList can refresh the data if needed.
-        <BetList bets={bets} refreshBets={fetchBets} />
+        <BetList userId={userId} bets={bets} refreshBets={fetchBets} />
       )}
     </div>
   );

@@ -10,9 +10,9 @@
     "test": "jest"
   },
   "dependencies": {
-    "@prisma/client": "^6.5.0",
-    "bcryptjs": "^3.0.2",
+    "json-schema": "^0.4.0",
     "jsonwebtoken": "^9.0.2",
+    "ms": "^2.1.3",
     "next": "15.1.7",
     "pg": "^8.13.3",
     "react": "^19.0.0",
@@ -22,9 +22,14 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@prisma/client": "^6.5.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",
+    "@types/aria-query": "^5.0.4",
+    "@types/estree": "^1.0.6",
+    "@types/json-schema": "^7.0.15",
     "@types/jsonwebtoken": "^9.0.9",
+    "@types/ms": "^2.1.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

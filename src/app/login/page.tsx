@@ -3,39 +3,58 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function Login() {
-  const router = useRouter();
-  const [form, setForm] = useState({ email: "", password: "" });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const router = useRouter();
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
+  async function handleLogin() {
     setError("");
-    try {
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Login failed");
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
 
-      localStorage.setItem("token", data.token);
-      router.push("/bets"); // Redirect to bets page
-    } catch (err: any) {
-      setError(err.message);
+    const data = await res.json();
+
+    if (!res.ok) {
+      setError(data.error || "Login failed");
+      return;
     }
+
+    // Store userId in localStorage
+    localStorage.setItem("userId", data.userId);
+
+    // Redirect to create-bet page after login
+    router.push("/create-bet");
   }
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 bg-gray-800 text-white rounded">
-      <h2 className="text-2xl font-bold mb-4">Login</h2>
+    <div className="max-w-md mx-auto bg-gray-800 p-6 rounded-lg shadow-lg">
+      <h2 className="text-2xl font-bold mb-4 text-white">Login</h2>
       {error && <p className="text-red-500">{error}</p>}
-      <form onSubmit={handleSubmit} className="space-y-4">
-      <input type="email" placeholder="Email" className="w-full p-2 text-black" onChange={(e) => setForm({ ...form, email: e.target.value })} required />
-        <input type="password" placeholder="Password" className="w-full p-2 text-black" onChange={(e) => setForm({ ...form, password: e.target.value })} required />
-        <button type="submit" className="w-full p-2 bg-green-500 hover:bg-green-700">Login</button>
-      </form>
+      <input
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        className="w-full p-2 my-2 border rounded-md text-black"
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        className="w-full p-2 my-2 border rounded-md text-black"
+      />
+      <button
+        onClick={handleLogin}
+        className="w-full mt-4 bg-blue-500 text-white font-bold p-2 rounded-md"
+      >
+        Login
+      </button>
     </div>
   );
 }
