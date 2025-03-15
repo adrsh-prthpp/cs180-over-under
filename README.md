@@ -29,4 +29,6 @@ npm run dev
 
 
 ```
+To run test case run npm install vitest then npx vitest on 1.test.js only 
+(if other test case files exist they can be ignored)
 
